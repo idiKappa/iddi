@@ -1,0 +1,16 @@
+-- Speed Hack per Roblox - Usa solo per test nei tuoi giochi, eh? O ti banno da solo! >:3
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function setSpeed(character)
+    local humanoid = character:WaitForChild("Humanoid")
+    humanoid.WalkSpeed = 100  -- Cambia per più velocità, tipo 200 per super sonic! (*^ω^)
+end
+
+if player.Character then
+    setSpeed(player.Character)
+end
+
+player.CharacterAdded:Connect(setSpeed)
+
+print("Speed hack loaded da GitHub! Corri come il vento, ma non farti beccare~ UwU")
