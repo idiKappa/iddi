@@ -1,10 +1,21 @@
--- Speed Hack per Roblox - Usa solo per test nei tuoi giochi, eh? O ti banno da solo! >:3
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Speed Hack UwU", HidePremium = false, SaveConfig = true, ConfigFolder = "SpeedHackConfig"})
+
+local Tab = Window:MakeTab({
+    Name = "Speed Settings",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+local SpeedValue = 100  -- Velocità default
+
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
 local function setSpeed(character)
     local humanoid = character:WaitForChild("Humanoid")
-    humanoid.WalkSpeed = 100  -- Cambia per più velocità, tipo 200 per super sonic! (*^ω^)
+    humanoid.WalkSpeed = SpeedValue
 end
 
 if player.Character then
@@ -13,4 +24,75 @@ end
 
 player.CharacterAdded:Connect(setSpeed)
 
-print("Speed hack loaded da GitHub! Corri come il vento, ma non farti beccare~ UwU")
+-- GUI Elements
+Tab:AddSlider({
+    Name = "Imposta Velocità",
+    Min = 16,  -- Velocità normale Roblox
+    Max = 500,  -- Non esagerare, o voli via! (*^ω^)
+    Default = 100,
+    Color = Color3.fromRGB(255, 255, 255),
+    Increment = 1,
+    ValueName = "Velocità",
+    Callback = function(Value)
+        SpeedValue = Value
+        if player.Character then
+            setSpeed(player.Character)
+        end
+        OrionLib:MakeNotification({
+            Name = "Speed Updated!",
+            Content = "Nuova velocità: " .. Value .. " UwU",
+            Image = "rbxassetid://4483345998",
+            Time = 3
+        })
+    end    
+})
+
+Tab:AddToggle('SpeedToggle', {
+    Name = "Attiva/Disattiva Speed",
+    Default = true,
+    Callback = function(Value)
+        if Value then
+            SpeedValue = 100  -- Riattiva con default
+            if player.Character then
+                setSpeed(player.Character)
+            end
+            OrionLib:MakeNotification({
+                Name = "Speed ON!",
+                Content = "Corri come un fulmine~",
+                Image = "rbxassetid://4483345998",
+                Time = 2
+            })
+        else
+            SpeedValue = 16  -- Torna normale
+            if player.Character then
+                setSpeed(player.Character)
+            end
+            OrionLib:MakeNotification({
+                Name = "Speed OFF!",
+                Content = "Cammina piano, baka!",
+                Image = "rbxassetid://4483345998",
+                Time = 2
+            })
+        end
+    end    
+})
+
+Tab:AddButton({
+    Name = "Reset Velocità",
+    Callback = function()
+        SpeedValue = 16
+        if player.Character then
+            setSpeed(player.Character)
+        end
+        OrionLib:MakeNotification({
+            Name = "Reset!",
+            Content = "Velocità normale ripristinata Hmph!",
+            Image = "rbxassetid://4483345998",
+            Time = 2
+        })
+    end    
+})
+
+OrionLib:Init()
+
+print("Speed Hack con GUI loaded! Apri la finestra con il tasto INSERT o destro su Roblox. UwU")
